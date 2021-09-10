@@ -9,6 +9,7 @@ def scrape():
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=False)
 
+    mars_page = {}
 
     url = 'https://redplanetscience.com/'
     browser.visit(url)
@@ -18,9 +19,9 @@ def scrape():
     soup = BeautifulSoup(html, 'html.parser')
     # Retrieve all elements that contain title and paragraph information
     Latest_news_title = soup.find_all('div', class_='content_title')[0].text
+    mars_page['new_title'] - Latest_news_title
     article_paragraph = soup.find_all('div', class_='article_teaser_body')[0].text
-    print(Latest_news_title)
-    print(article_paragraph)
+    mars_page['new_description'] - article_paragraph
 
 
     url = 'https://spaceimages-mars.com'
@@ -30,7 +31,7 @@ def scrape():
     # Parse HTML with Beautiful Soup
     soup = BeautifulSoup(html, 'html.parser')
     featured_image_url = soup.find('img', class_='headerimage fade-in')['src']
-
+    mars_page['featured_image'] - featured_image_url
 
     url = 'https://galaxyfacts-mars.com'
     browser.visit(url)
@@ -39,16 +40,11 @@ def scrape():
     # Parse HTML with Beautiful Soup
     soup = BeautifulSoup(html, 'html.parser')
     tables = pd.read_html(url)
-    tables
     mars_df = tables[0]
-    mars_df.head()
-    mars_df.columns = ["Planet Facts", "Mars", "Earth"]
-    mars_df
+    # mars_df.columns = ["Planet Facts", "Mars", "Earth"]
     html_table = mars_df.to_html()
-    html_table
-    html_table.replace('\n', '')
-    mars_df.to_html('table.html', index = False)
-    get_ipython().system('open table.html')
+    mars_page['mars_earth_table'] - html_table
+    # mars_df.to_html('table.html', index = False)
 
 
     url = 'https://marshemispheres.com/'
@@ -69,8 +65,8 @@ def scrape():
             img_link = article.find('a')
             link = article.a['href']
             image = url + link
-            print('-----------')
-            print(image)
+            # print('-----------')
+            # print(image)
             new_url = image
             browser.visit(new_url)
 
@@ -82,14 +78,16 @@ def scrape():
             img_url = f"https://marshemispheres.com/" + new_link
 
             if (title and new_link):
-                print(title)
-                print(img_url)
+                # print(title)
+                # print(img_url)
                 hemisphere_dict = {
                     'title' : title,
                     'img_url' : img_url}
                 hemisphere_image_url.append(hemisphere_dict)
         except:
             print('e')
+    
+    mars_page['mars_hemispheres'] - hemisphere_image_url
 
 
 
