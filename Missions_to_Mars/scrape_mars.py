@@ -19,9 +19,9 @@ def scrape():
     soup = BeautifulSoup(html, 'html.parser')
     # Retrieve all elements that contain title and paragraph information
     Latest_news_title = soup.find_all('div', class_='content_title')[0].text
-    mars_page['new_title'] - Latest_news_title
+    mars_page['news_title'] = Latest_news_title
     article_paragraph = soup.find_all('div', class_='article_teaser_body')[0].text
-    mars_page['new_description'] - article_paragraph
+    mars_page['news_description'] = article_paragraph
 
 
     url = 'https://spaceimages-mars.com'
@@ -31,7 +31,7 @@ def scrape():
     # Parse HTML with Beautiful Soup
     soup = BeautifulSoup(html, 'html.parser')
     featured_image_url = soup.find('img', class_='headerimage fade-in')['src']
-    mars_page['featured_image'] - featured_image_url
+    mars_page['featured_image'] = featured_image_url
 
     url = 'https://galaxyfacts-mars.com'
     browser.visit(url)
@@ -43,7 +43,7 @@ def scrape():
     mars_df = tables[0]
     # mars_df.columns = ["Planet Facts", "Mars", "Earth"]
     html_table = mars_df.to_html()
-    mars_page['mars_earth_table'] - html_table
+    mars_page['mars_earth_table'] = html_table
     # mars_df.to_html('table.html', index = False)
 
 
@@ -87,14 +87,14 @@ def scrape():
         except:
             print('e')
     
-    mars_page['mars_hemispheres'] - hemisphere_image_url
+    mars_page['mars_hemispheres'] = hemisphere_image_url
 
 
 
     # Quit the browser
     browser.quit()
 
-    return listings
+    return mars_page
 
 
 
