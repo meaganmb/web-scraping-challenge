@@ -31,7 +31,7 @@ def scrape():
     # Parse HTML with Beautiful Soup
     soup = BeautifulSoup(html, 'html.parser')
     featured_image_url = soup.find('img', class_='headerimage fade-in')['src']
-    mars_page['featured_image'] = featured_image_url
+    mars_page['featured_image'] = url + featured_image_url
 
     url = 'https://galaxyfacts-mars.com'
     browser.visit(url)
@@ -41,22 +41,18 @@ def scrape():
     soup = BeautifulSoup(html, 'html.parser')
     tables = pd.read_html(url)
     mars_df = tables[0]
-    # mars_df.columns = ["Planet Facts", "Mars", "Earth"]
     html_table = mars_df.to_html()
     mars_page['mars_earth_table'] = html_table
-    # mars_df.to_html('table.html', index = False)
 
 
     url = 'https://marshemispheres.com/'
     browser.visit(url)
     hemisphere_image_url = []
-    # Iterate through all pages
 
     # HTML object
     html = browser.html
     # Parse HTML with Beautiful Soup
     soup = BeautifulSoup(html, 'html.parser')
-    # Retrieve all elements that contain book information
     articles = soup.find_all('div', class_='description')
 
     for article in articles:
@@ -65,8 +61,6 @@ def scrape():
             img_link = article.find('a')
             link = article.a['href']
             image = url + link
-            # print('-----------')
-            # print(image)
             new_url = image
             browser.visit(new_url)
 
@@ -78,8 +72,6 @@ def scrape():
             img_url = f"https://marshemispheres.com/" + new_link
 
             if (title and new_link):
-                # print(title)
-                # print(img_url)
                 hemisphere_dict = {
                     'title' : title,
                     'img_url' : img_url}
